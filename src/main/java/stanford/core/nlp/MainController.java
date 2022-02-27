@@ -45,11 +45,11 @@ public class MainController {
 
     @GetMapping("/")
     public String greetingForm(Model model) {
-        model.addAttribute("greeting", new Data());
+        model.addAttribute("data", new Data());
         return "welcome";
     }
 
-    @PostMapping("/greeting")
+    @PostMapping("/")
     public String greetingSubmit(@ModelAttribute Data data, Model model) {
         ner(data);
         model.addAttribute("data", data);
