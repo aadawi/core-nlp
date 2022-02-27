@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-<form th:action="@{/greeting}" th:object="${data}" method="post">
+<form th:action="@{/}" th:object="${data}" method="post">
     <div class="bd">
         <div class="card">
             <div class="card-body">Stanford Core NLP
@@ -31,9 +31,9 @@
             </div>
         </div>
         <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
-        <div>
+        <div th:if="${data.result != null}">
             Response:
-            <p th:text="'content: ' + ${data.result}"/>
+            <p th:text="'Tree result ' + ${data.result}"/>
         </div>
     </div>
     <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
