@@ -30,21 +30,6 @@ public class MainController {
     @Autowired
     private CoreNlpService coreNlpService;
 
-//    @PostMapping("/upload")
-//    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
-//
-//        String fileName = file.getOriginalFilename();
-//        try {
-//            if (!fileName.endsWith(".txt")) {
-//                return ResponseEntity.badRequest().body("Allowed file type is .txt");
-//            }
-//            file.transferTo(new File("C:\\Data\\upload\\" + fileName));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//        return ResponseEntity.ok("File uploaded successfully.");
-//    }
-
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
         // check if file is empty
