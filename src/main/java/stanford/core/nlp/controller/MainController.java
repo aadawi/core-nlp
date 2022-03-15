@@ -2,7 +2,6 @@ package stanford.core.nlp.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +16,6 @@ import stanford.core.nlp.service.CoreNlpService;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,7 +53,7 @@ public class MainController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<?> downloadFile(@RequestParam("content") String content, HttpServletResponse response) throws IOException {
+    public ResponseEntity<String> downloadFile(@RequestParam("content") String content, HttpServletResponse response) throws IOException {
         if (content == null || content.equalsIgnoreCase("") || content.equalsIgnoreCase("null")) {
             return ResponseEntity.ok("");
         }
