@@ -17,6 +17,7 @@ import stanford.core.nlp.service.CoreNlpService;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,7 +63,7 @@ public class MainController {
         String headerValue = "attachment; filename =  stanford_" + System.currentTimeMillis() + ".txt";
         response.setHeader(headerKey, headerValue);
         ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(content.getBytes());
+        outputStream.write(content.getBytes(StandardCharsets.UTF_8));
         outputStream.close();
         return ResponseEntity.ok("file downloaded");
     }
