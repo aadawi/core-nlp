@@ -15,46 +15,52 @@
         border-top-right-radius: 0.25rem;
     }
 
-
-
+    .btn-primary{
+        background-color: #00386b !important;
+        border-color: #00386b !important;
+    }
+    textarea {
+        border: 2px solid  !important;
+        border-color: #00386b  !important;
+    }
     </style>
 </head>
 <body>
-
+<div style="background-color: #00386b;">
+    <img src="/img/1629287818675.jpg" height="100px"/> <span style="color:#cbd5df;font-size:20px">Knowledge management and reasoning</span>
+</div>
 <div class="bd">
     <h4 style="text-align: center;">Statistical Parsing Of Arabic</h4>
-    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
-        <div class="form-group">
-            <div class="mb-3" style="width:400px">
-                <label for="file" class="form-label">Default file input example</label>
-                <input class="form-control" name="file" type="file" id="file" width="400px">
-            </div>
-            <div class="mb-3" style="width:400px">
-                <button type="submit" class="btn btn-primary">Upload File</button>
-            </div>
-        </div>
-    </form>
-    <form th:action="@{/}" th:object="${data}" method="post">
+
+    <form th:action="@{/}" th:object="${data}" id="main-form" method="post" enctype="multipart/form-data">
         <div class="input-group">
-            <span class="input-group-text">Enter text here</span>
-            <textarea th:field="*{content}" class="form-control" aria-label="With textarea"
+            <textarea th:field="*{content}" class="form-control"
+                      placeholder="Enter text here"
+                      aria-label="With textarea"
+                      style="dir:rtl;height:100px"></textarea>
+        </div>
+        <p style="margin-top:3px;">
+            <input class="form-control" style="border: 2px solid #00386b " name="file" type="file" id="fileupload" oninput="uploadFile()"/>
+        </p>
+
+        <input class="btn btn-primary" type="submit" value="Parse"/>
+        <a th:href="@{'/download?content=' + ${data.result}}" target="_blank" class="btn btn-primary"
+           role="button">Copy to file</a>
+        </p>
+        Parsed text
+        <div class="input-group">
+            <textarea th:value="*{result}" th:field="*{result}" class="form-control"
+                      placeholder="Parsed Text"
+                      aria-label="With textarea"
+                      id="result"
+                      readonly
                       style="dir:rtl;height:100px"></textarea>
 
         </div>
         <br/>
-        <p>
-            <input class="btn btn-primary" type="submit" value="Parse"/>
-            <a th:if="${data.result != null}"  th:href="@{'/download?content=' + ${data.result}}" class="btn btn-primary" role="button">Copy to file</a>
-        </p>
-<!--        <div><a th:href="@{'/download?content=' + ${data.result}}"><i class="fa fa-download">asdf</i></a></div>-->
-        <div class="input-group">
-            <span class="input-group-text">Parsed Text</span>
-            <textarea th:value="*{result}" th:field="*{result}" class="form-control" aria-label="With textarea"
-                      style="dir:rtl;height:100px"></textarea>
-        </div>
-        <br/>
-        <div th:if="${data.result != null}" style="border: 1px solid #ced4da;text-align: center;">
-            <img th:src="${data.img}" width="450px"/>
+        Arabic Treebank
+        <div style="border: 2px solid #00386b !important;text-align: center;min-height:300px">
+            <img th:if="${data.result != null}" th:src="${data.img}">
         </div>
     </form>
 </div>
@@ -65,17 +71,28 @@
 </html>
 
 <script>
-function fire_ajax_submit() {
-    $.ajax({
-        type:"get",
-        data:"str",
-        url:"/download",
-        dataType: "json",
-        success: function(result){
-           $(element).append(result);
-        }
-    });
-    }
+
+function uploadFile() {
+    document.getElementById('main-form').action = 'upload';
+    document.getElementById('main-form').submit();
+}
+async function uploadFile2() {
+  let formData = new FormData();
+  if (!fileupload.files[0]){
+    return;
+  }
+  formData.append("file", fileupload.files[0]);
+  let response = await fetch('/upload', {
+    method: "POST",
+    body: formData
+  });
+    console.log(response);
+  if (response.status == 200) {
+    alert("File successfully uploaded.");
+  } else {
+    alert("Error while uploading file, please make sure file extension is .txt");
+  }
+}
 
 
 

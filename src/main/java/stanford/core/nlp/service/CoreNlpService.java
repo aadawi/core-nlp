@@ -35,16 +35,20 @@ public class CoreNlpService {
         doc.sentences().forEach(sentence -> {
             Tree tree = sentence.constituencyParse();
             try {
+                String result = "";
+                if (tree.pennString() != null) {
+                    result = tree.pennString().replaceAll("\\r\\n", "");
+                    input.setResult(result);
+                }
                 SemanticGraph semanticGraph = getSemanticGraph(tree, SemanticGraphFactory.Mode.COLLAPSED_TREE);
                 MutableGraph g = new Parser().read(semanticGraph.toDotFormat("g1", CoreLabel.OutputFormat.VALUE_TAG));
                 String filename = "ex4-" + System.currentTimeMillis() + ".svg";
                 File newFile = new File("c:/nlp/images/" + filename);
                 Graphviz.fromGraph(g).processor(new Roughifyer()
-                        .fillStyle(FillStyle.zigzagLine())
-                        .font("*", "Adobe Kaiti Std")
+                    .fillStyle(FillStyle.zigzagLine())
+                    .font("*", "Adobe Kaiti Std")
                 ).width(700).yInvert(true).render(Format.SVG).toFile(newFile);
-                input.setResult(tree.pennString());
-                input.setImg("/content/"+filename);
+                input.setImg("/content/" + filename);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -53,11 +57,11 @@ public class CoreNlpService {
 
     private SemanticGraph getSemanticGraph(Tree constituencyParse, SemanticGraphFactory.Mode mode) {
         SemanticGraph semanticGraph = SemanticGraphFactory.
-                makeFromTree(constituencyParse,
-                        mode,
-                        GrammaticalStructure.Extras.MAXIMAL, null);
+            makeFromTree(constituencyParse,
+                mode,
+                GrammaticalStructure.Extras.MAXIMAL, null);
         SemanticGraphFactory.
-                generateUncollapsedDependencies(constituencyParse).prettyPrint();
+            generateUncollapsedDependencies(constituencyParse).prettyPrint();
         return semanticGraph;
     }
 }
