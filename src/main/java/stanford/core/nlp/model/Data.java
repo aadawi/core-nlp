@@ -4,6 +4,15 @@ public class Data {
 
     private String content;
     private String result;
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getContent() {
         return content;
